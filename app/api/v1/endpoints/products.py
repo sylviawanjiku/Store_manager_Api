@@ -11,6 +11,41 @@ parser.add_argument('quantity',type = int)
 parser.add_argument('price', type =int)
 class Products(Resource):
     products = []
+    def get(self,product_id = None):
+        # Get all products in the list
+        if product_id is None:
+            # If the list is empty
+            if len(Products.products) == 0:
+                return make_response(jsonify({
+                'message': 'The product list is empty'
+                }), 200)
+            # If the list is not empty
+            product = Product.get_products(self)
+            return make_response(jsonify(
+                {
+                    'status': 'Ok',
+                    'Message': 'success',
+                    'product': product
+                }
+            ), 200)
+        # # Get a single product from the products list
+        # single_product = [product for product in Products.products if int(product['id']) == int(product_id)]
+        
+        # # Identify a single item with it's id and fetch it
+        # if single_product:
+             one_product = Product.get_single_product(self,product_id) 
+             return make_response(jsonify({
+                'status': 'ok',
+                'message': 'success',
+                'product': one_product
+            }), 200)
+         # Identify a single item with it's id and fetch it and if it's not present return the following    
+        return make_response(jsonify({
+            'status': 'failed',
+            'message': 'not found'
+        }), 404)
+
+       
     def post(self):
         # Posting items to products
         
@@ -25,22 +60,3 @@ class Products(Resource):
         return make_response(jsonify({
                 'product': new_product
             }), 201)
-
-    def get(self,product_id = None):
-            # Get all products in the list
-            if product_id is None:
-                # If the list is empty
-                if len(Products.products) == 0:
-                    return make_response(jsonify({
-                    'message': 'The product list is empty'
-                    }), 200)
-                # If the list is not empty
-                
-                return make_response(jsonify(
-                    {
-                        'status': 'Ok',
-                        'Message': 'success',
-                        'product': Products.products
-                    }
-                ), 200)
-            
