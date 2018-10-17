@@ -18,3 +18,13 @@ class TestProducts(unittest.TestCase):
         product_data = json.loads(new_product.data.decode())
         self.assertEqual((product_data['message']), 'product success')
         self.assertIn(product_data.status_code, 201)  
+
+     def test_api_can_get_all_products(self):
+        # Test API can get products (GET request).
+        added_product = self.client().post('/api/v1/products',data = self.products_data)
+        product_data = json.loads(added_product.data.decode())
+        self.assertEqual((product_data['message']),'product success')
+        self.assertEqual(product_data.status_code, 201)
+        res = self.client().get('/api/v1/products')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('Sugar', str(res.data))

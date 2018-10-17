@@ -25,3 +25,22 @@ class Products(Resource):
         return make_response(jsonify({
                 'product': new_product
             }), 201)
+
+    def get(self,product_id = None):
+            # Get all products in the list
+            if product_id is None:
+                # If the list is empty
+                if len(Products.products) == 0:
+                    return make_response(jsonify({
+                    'message': 'The product list is empty'
+                    }), 200)
+                # If the list is not empty
+                
+                return make_response(jsonify(
+                    {
+                        'status': 'Ok',
+                        'Message': 'success',
+                        'product': Products.products
+                    }
+                ), 200)
+            
