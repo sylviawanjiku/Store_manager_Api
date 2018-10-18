@@ -1,6 +1,3 @@
-from flask_restful import  reqparse
-# request data validation
-
 class Product():
     products = []
     def __init__(self,product_name,brand,quantity,price):
@@ -29,6 +26,6 @@ class Product():
         
     def get_single_product(self,product_id):
         single_product = [product for product in self.products if int(product['id']) == int(product_id)]
-        if product_id:
+        if single_product:
             return {'products' : single_product, 'message' : 'Product retrieved successfully'}
-        return{'message':'product not found'}
+        # return{'message':'product not found'}
