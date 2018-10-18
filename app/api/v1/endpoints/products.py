@@ -4,12 +4,16 @@ from flask_restful import Resource, reqparse
 
 # request data validation
 parser =reqparse.RequestParser()
-
-parser =reqparse.RequestParser()
+parser.add_argument('product_id')
 parser.add_argument('product_name')
 parser.add_argument('brand',type =str)
 parser.add_argument('quantity',type = int)
 parser.add_argument('price', type =int)
+parser.add_argument('avail_stock',type =int)
+parser.add_argument('min_stock',type =int)
+parser.add_argument('uom')
+parser.add_argument('category')
+
 
 class Products(Resource):
     def get(self,product_id = None):
@@ -45,15 +49,19 @@ class Products(Resource):
 
        
     def post(self):
-        '''Posting items to products'''
-        
+        '''Posting items to products'''        
         args = parser.parse_args()
+        product_id = args['product_id']
         product_name = args['product_name']
         brand = args['brand']
         quantity = args['quantity']
-        price = args['price']     
+        price = args['price']
+        avail_stock = ['avail_stock']
+        min_stock =['min_stock']
+        uom =['uom']
+        category = ['category']      
         
-        my_product = Product(product_name,brand,quantity,price)
+        my_product = Product(product_id,product_name,brand,quantity,price,avail_stock,min_stock,uom,category)
         new_product = my_product.post_product()
         return make_response(jsonify({
                 'product': new_product

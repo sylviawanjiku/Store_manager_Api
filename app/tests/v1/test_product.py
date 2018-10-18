@@ -11,7 +11,8 @@ class TestProducts(unittest.TestCase):
         self.app = create_app(config_name="testing")
         self.client = self.app.test_client
         self.products_data ={'product_name':'Sugar','brand':'Mumias','quantity':50,'price':500}
-       
+
+     
     
     def test_new_product_creation(self):
         '''Test API can create a product (POST request)'''
