@@ -14,9 +14,9 @@ class Sale():
             id = len(Sale.sales),
             sale_record_id = self.sale_record_id,
             user_id = self.user_id,
-            username =self.username,
-            cart_id =self.cart_id,
             sale_date = self.sale_date,
+            username =self.username,
+            cart_id =self.cart_id,            
             total =self.total
         )
         self.sales.append(sale_data)
