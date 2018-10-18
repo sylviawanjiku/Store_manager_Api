@@ -25,7 +25,16 @@ class TestSales(unittest.TestCase):
         self.assertEqual(added_sale.status_code, 201)
         res = self.client().get('/api/v1/sales')
         self.assertEqual(res.status_code, 200)
+    def test_api_can_get_a_single_sale(self):
+        '''Test API can get a single sale record (GET<id> request).'''
+        added_sale = self.client().post('/api/v1/sales',data = self.sales_data)
+        self.assertEqual(added_sale.status_code, 201)
+        added_sale_id = json.loads(added_sale.data.decode())
 
+        ''' Check for posted sale and fetch the sale verify if the sales data is correct'''
+        posted_sale_data = self.client().get('/api/v1/sales/{}'.format(added_sale_id['sale'] ['id']))
+        self.assertEqual(posted_sale_data.status_code, 200)
+        
     """make the test executable"""
 if __name__=='__main__':
     unittest.main()

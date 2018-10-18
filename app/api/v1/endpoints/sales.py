@@ -50,3 +50,17 @@ class SalesRecord(Resource):
                     'sale': sale
                 }
             ), 200) 
+        """Get a single sale from the sales list"""
+        view_sale = Sale.get_single_sale(self,sale_id)
+        if view_sale:
+            return make_response(jsonify({
+                'status': 'ok',
+                'message': 'success',
+                'sale': view_sale
+            }), 200)
+
+        '''Identify a single item with it's id and fetch it and if it's not present return the following '''   
+        return make_response(jsonify({
+            'status': 'failed',
+            'message': 'not found'
+        }), 404)      
