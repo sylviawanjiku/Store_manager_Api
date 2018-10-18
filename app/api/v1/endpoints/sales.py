@@ -32,4 +32,21 @@ class SalesRecord(Resource):
         return make_response(jsonify({
                 'sale': new_sale
             }), 201)
-    
+
+   
+    def get(self,sale_id = None):
+        # Get all sales in the list
+        if sale_id is None:
+            sale = Sale.get_sales(self)
+            # If the list is empty
+            if len(sale) == 0:
+                return make_response(jsonify({
+                'message': 'The sales record list is empty'
+                }), 200)
+            return make_response(jsonify(
+                {
+                    'status': 'Ok',
+                    'Message': 'success',
+                    'sale': sale
+                }
+            ), 200) 

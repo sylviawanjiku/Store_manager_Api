@@ -18,7 +18,13 @@ class TestSales(unittest.TestCase):
         '''Test API can create a sale record (POST request)'''
         new_sale = self.client().post('/api/v1/sales',data = self.sales_data)       
         self.assertEqual(new_sale.status_code, 201)
-      
+    
+    def test_api_can_get_all_sales(self):
+        '''Test API can get sales record (GET request)'''
+        added_sale = self.client().post('/api/v1/sales',data = self.sales_data)
+        self.assertEqual(added_sale.status_code, 201)
+        res = self.client().get('/api/v1/sales')
+        self.assertEqual(res.status_code, 200)
 
     """make the test executable"""
 if __name__=='__main__':
