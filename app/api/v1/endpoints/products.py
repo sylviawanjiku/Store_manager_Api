@@ -12,32 +12,32 @@ parser.add_argument('quantity',type = int)
 parser.add_argument('price', type =int)
 
 class Products(Resource):
-    products = []
     def get(self,product_id = None):
         # Get all products in the list
         if product_id is None:
+            product = Product.get_products(self)
             # If the list is empty
-            if id == 0:
+            if len(product) == 0:
                 return make_response(jsonify({
                 'message': 'The product list is empty'
                 }), 200)
-            # If the list is not empty
-            product = Product.get_products(self)
             return make_response(jsonify(
                 {
                     'status': 'Ok',
                     'Message': 'success',
-                    'product': Product.products
+                    'product': product
                 }
             ), 200)
-        # Get a single product from the products list
-            view_product = Product.get_single_product(self,id) 
+        '''Get a single product from the products list'''
+        view_product = Product.get_single_product(self,product_id)
+        if view_product:
             return make_response(jsonify({
                 'status': 'ok',
                 'message': 'success',
                 'product': view_product
             }), 200)
-         # Identify a single item with it's id and fetch it and if it's not present return the following    
+
+        '''Identify a single item with it's id and fetch it and if it's not present return the following '''   
         return make_response(jsonify({
             'status': 'failed',
             'message': 'not found'
@@ -45,7 +45,7 @@ class Products(Resource):
 
        
     def post(self):
-        # Posting items to products
+        '''Posting items to products'''
         
         args = parser.parse_args()
         product_name = args['product_name']

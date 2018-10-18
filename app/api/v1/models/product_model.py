@@ -17,15 +17,15 @@ class Product():
            )
         self.products.append(product_data)
 
-        return {'products' : self.products, 'message' : 'Posted successfully'}
+        return product_data
 
         
     def get_products(self):
         # fetch all products
-        return {'products' : self.products, 'message' : 'Products retrieved successfully'}
+        return  Product.products
         
     def get_single_product(self,product_id):
-        single_product = [product for product in self.products if int(product['id']) == int(product_id)]
+        single_product= [product for product in Product.products if int(product['id']) == int(product_id)]
         if single_product:
-            return {'products' : single_product, 'message' : 'Product retrieved successfully'}
+            return single_product 
         # return{'message':'product not found'}
