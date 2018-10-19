@@ -7,7 +7,7 @@ import datetime
 
 class UserModel():
     users = []
-    def __init__(self,username,first_name,last_name,password,email,role):
+    def __init__(self,username,first_name,last_name,email,role,password):
         """initialize the user model"""
         self.username = username
         self.first_name = first_name
