@@ -1,12 +1,17 @@
+"""
+This module defines the sale model and associated functions
+"""
+from datetime import datetime, timedelta
+
 class Sale():
     sales = []
     def __init__(self,sale_record_id,user_id,username,cart_id,sale_date,total):
-        """Instansiating the variables for my methods"""
+        """Instanciate the variables for my methods"""
         self.sale_record_id =sale_record_id 
         self.user_id = user_id
         self.username =username
         self.cart_id =cart_id
-        self.sale_date = sale_date
+        self.sale_date = sale_date =datetime.now()
         self.total =total
 
     def post_sale(self):
