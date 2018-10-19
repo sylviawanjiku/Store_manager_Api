@@ -1,6 +1,7 @@
 from flask import Flask, make_response, jsonify, request
 from ..models.user_model import UserModel
 from flask_restful import Resource, reqparse
+import datetime
 
 # request data validation
 parser =reqparse.RequestParser()
@@ -34,13 +35,14 @@ class Login(Resource):
         data = request.get_json(force=True)
         email=data['email']
         get_password=data['password']
-        cur_user=[c_user for c_user in current_user if c_user['email']==email]
+        current_user=UserModel(username,first_name,last_name,email,role,password)
+        now_user=[now_user for now_user in current_user if now_user['email']==email]
 
-        if  len(cur_user) > 0:		
-            password =cur_user[0]['password']
+        if  len(now_user) > 0:		
+            password =now_user[0]['password']
             if sha256_crypt.verify(get_password, password):
                 exp_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=3)
-                token = jwt.encode({'user_id': cur_user[0]['user_id'],'exp': exp_time},"secret")
+                token = jwt.encode({'user_id': now_user[0]['user_id'],'exp': exp_time},"secret")
                 result={"message":"Login succesful","token":token.decode('utf-8')}
                 
             else:
