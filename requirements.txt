@@ -32,7 +32,6 @@ more-itertools==4.3.0
 passlib==1.7.1
 pathlib2==2.3.2
 pep8==1.7.1
-pkg-resources==0.0.0
 pluggy==0.7.1
 py==1.7.0
 pycparser==2.19
