@@ -7,7 +7,7 @@ Store Manager is an app that allows users to control sales and inventory.
 The store manager app has two type of users store attendant and store owner(admin).
 Each of the two users have their indivindual roles to play but in this case what the store attendant can do the admin can also do.
 
-###The store attendant can perform the following:
+### The store attendant can perform the following:
 
 1. Login to the app
 2. View all products 
@@ -15,7 +15,7 @@ Each of the two users have their indivindual roles to play but in this case what
 4. Make a sale 
 5. View a personal sales record
 
-###The store owner can perform the following:
+### The store owner can perform the following:
 
 1. Login to the app
 2. register a new user
@@ -44,12 +44,11 @@ Each of the two users have their indivindual roles to play but in this case what
 7. get-fetch user   http://127.0.0.1:5000/api/v1/users 
 7. get-fetch single user    http://127.0.0.1:5000/api/v1/users/user_id
 
-###Testing the app
+### Testing the app
 
 The endpoints above can be tested using Postman.
 
 The tests have been automated through continousintergration in TravisCI
-
-###Hosting the app
+### Hosting the app
 The app has been hosted on Heroku
 https://andstore.herokuapp.com/
