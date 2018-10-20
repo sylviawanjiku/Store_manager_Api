@@ -56,10 +56,10 @@ class Products(Resource):
         brand = args['brand']
         quantity = args['quantity']
         price = args['price']
-        avail_stock = ['avail_stock']
-        min_stock =['min_stock']
-        uom =['uom']
-        category = ['category']      
+        avail_stock = args['avail_stock']
+        min_stock =args['min_stock']
+        uom =args['uom']
+        category = args['category']      
         
         my_product = Product(product_id,product_name,brand,quantity,price,avail_stock,min_stock,uom,category)
         new_product = my_product.post_product()
