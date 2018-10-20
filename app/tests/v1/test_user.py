@@ -39,6 +39,6 @@ class TestUser(unittest.TestCase):
 
     
     def test_register_user_empty_username(self):
-        ''''''Test for empty username''''''
+        '''Test for empty username'''
         new_user = self.client().post('/api/v1/users',data = self.user_data_empty_username)       
         self.assertEqual(new_user.status_code, 400)
