@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint
-from flask_restful import Resource ,Api
+from flask_restful import Api
 
 from instance.config import app_config
 
