@@ -8,12 +8,12 @@ from datetime import datetime
 # request data validation
 parser =reqparse.RequestParser()
 
-parser.add_argument('sale_record_id')
-parser.add_argument('user_id')
-parser.add_argument('username',type = str)
-parser.add_argument('cart_id')
-parser.add_argument('sale_date')
-parser.add_argument('total', type =int)
+parser.add_argument('sale_record_id', required=True, help='sale_record_id cannot be blank', type=str)
+parser.add_argument('user_id', required=True, help='user_id cannot be blank', type=str)
+parser.add_argument('username',required=True, help='username cannot be blank',type = str)
+parser.add_argument('cart_id', required=True, help='cart_id cannot be blank', type=int)
+parser.add_argument('sale_date',required=True, help='Username cannot be blank', type=datetime)
+parser.add_argument('total',required=True, help='total cannot be blank', type =int)
 
 class SalesRecord(Resource):
     def post(self):

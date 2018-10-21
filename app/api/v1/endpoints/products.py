@@ -4,15 +4,15 @@ from flask_restful import Resource, reqparse
 
 # request data validation
 parser =reqparse.RequestParser()
-parser.add_argument('product_id')
-parser.add_argument('product_name')
-parser.add_argument('brand',type =str)
-parser.add_argument('quantity',type = int)
-parser.add_argument('price', type =int)
-parser.add_argument('avail_stock',type =int)
-parser.add_argument('min_stock',type =int)
-parser.add_argument('uom')
-parser.add_argument('category')
+parser.add_argument('product_id',required=True, help='product_id cannot be blank',type =int)
+parser.add_argument('product_name',required=True, help='product_id cannot be blank',type =str)
+parser.add_argument('brand',required=True, help='product_id cannot be blank',type =str)
+parser.add_argument('quantity',required=True, help='product_id cannot be blank',type = int)
+parser.add_argument('price',required=True, help='product_id cannot be blank', type =int)
+parser.add_argument('avail_stock',required=True, help='product_id cannot be blank',type =int)
+parser.add_argument('min_stock',required=True, help='product_id cannot be blank',type =int)
+parser.add_argument('uom',required=True, help='product_id cannot be blank',type =str)
+parser.add_argument('category',required=True, help='product_id cannot be blank',type =str)
 
 
 class Products(Resource):

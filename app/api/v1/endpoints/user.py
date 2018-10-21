@@ -6,9 +6,7 @@ import re
 from passlib.hash import sha256_crypt
 from functools import wraps
 import jwt
-# from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity,get_raw_jwt)
-
-
+from instance.config import secret_key
 
 parser =reqparse.RequestParser()
 parser.add_argument('username')
@@ -16,12 +14,11 @@ parser.add_argument('email')
 parser.add_argument('first_name') 
 parser.add_argument('last_name') 
 parser.add_argument('email')
-parser.add_argument('password') 
+parser.add_argument('password')
 
 
 """ Create a function that generates authentication"""
-def token_required(f):
-   
+def token_required(f):   
     # view function
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -34,8 +31,8 @@ def token_required(f):
             return jsonify({'message' : 'Token is missing!'}), 401
 
         try: 
-            data = jwt.decode(token,'secret') 
-            all_users = UserModel().get_all_users(username,first_name,last_name,password,email)    
+            data = jwt.decode(token,secret_key) 
+            all_users = UserModel().get_all_users()    
             current_user = [user for user in all_users if user['email']==data['email']]
            
         except:
@@ -44,6 +41,7 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
 
     return decorated
+
 class User(Resource): 
     def post(self):
             '''Posting items to Users'''        
@@ -53,10 +51,8 @@ class User(Resource):
             last_name = args.get('last_name')
             email = args.get('email')
             raw_password = args.get('password')  
-  
 
 # validate user input
-
             if not username:
                  return make_response(jsonify(
                 {
@@ -64,7 +60,6 @@ class User(Resource):
                     'Message': 'username cannot be null'                   
                 }
             ), 400)
-               
             if not first_name:
                   return make_response(jsonify(
                 {
@@ -73,9 +68,6 @@ class User(Resource):
                     
                 }
             ), 400)
-               
-             
-
             if not last_name:
                   return make_response(jsonify(
                 {
@@ -84,9 +76,6 @@ class User(Resource):
                     
                 }
             ), 400)
-               
-               
-
             if not email:
                   return make_response(jsonify(
                 {
@@ -95,9 +84,6 @@ class User(Resource):
                     
                 }
             ), 400)
-            
-
-           
             if not raw_password:
                   return make_response(jsonify(
                 {
@@ -106,11 +92,7 @@ class User(Resource):
                     
                 }
             ), 400)
-               
-               
-
-
-# generate hash
+# generate hash password
             password = UserModel.hash_password(raw_password)
             user = UserModel.create_user(username,first_name,last_name,password,email)
             all_users = UserModel.get_all_users()
@@ -124,8 +106,7 @@ class User(Resource):
             # return {"message":"",all_users}, 
            
 
-class Login(Resource):
-    
+class Login(Resource):    
     parser =reqparse.RequestParser()
     parser.add_argument('email')
     parser.add_argument('password')
@@ -141,8 +122,7 @@ class Login(Resource):
                 return {"message":"password cannot be null"}
 
 
-# after validation check if user exists by email
-            
+# after validation check if user exists by email            
             current_user = UserModel.find_by_email(email)
             if current_user == 0:
                   return {"message":"user with the email doesnt exist"}
@@ -151,25 +131,17 @@ class Login(Resource):
 # check if user password and stored hashed password match
             password_match = UserModel.verify_password(password,email)
             if password_match == True:
+# setup payload with an expiry period
                 payload = {
                     'exp': datetime.utcnow() + timedelta(minutes=7),
                     'iat': datetime.utcnow(),
                     'sub': email
                     }                
-                token = jwt.encode(payload,'secret')
-                return make_response(jsonify(
-                {
-                    'status': 'Ok',
-                    'Message': 'logged in successfully',
-                    'sale': token
-                }), 200) 
+# create token
+                return jwt.encode(
+                    payload,
+                    secret_key
+                    algorithm='HS256'
+                     )            
 
-            return {"message":"wrong credential"}
-     
-# # Test jwt
-# class SecretResource(Resource):
-#     @jwt_required
-#     def get(self):        
-#         return {
-#             'answer': 42
-#         }
+            return {"message":"wrong credentials"}
