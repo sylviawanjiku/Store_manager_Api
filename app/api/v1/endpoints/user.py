@@ -85,7 +85,7 @@ class User(Resource):
                 return {'message': 'email already exist'},400 
                
                
-# generate hash password
+            # generate hash password
             password = UserModel.hash_password(raw_password)
             user = UserModel.create_user(username,first_name,last_name,password,email)
             all_users = UserModel.get_all_users()

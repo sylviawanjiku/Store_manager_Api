@@ -1,6 +1,8 @@
 from flask import Flask, make_response, jsonify, request
 from ..models.product_model import Product
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity,get_raw_jwt)
+
 
 # request data validation
 parser =reqparse.RequestParser()
@@ -61,8 +63,14 @@ class Products(Resource):
         uom =args['uom']
         category = args['category']      
         
-        my_product = Product(product_id,product_name,brand,quantity,price,avail_stock,min_stock,uom,category)
-        new_product = my_product.post_product()
-        return make_response(jsonify({
-                'product': new_product
-            }), 201)
+        try:
+            my_product = Product(product_id,product_name,brand,quantity,price,avail_stock,min_stock,uom,category)
+            new_product = my_product.post_product()
+            
+            return make_response(jsonify({
+                    'product': new_product
+                }), 201)
+
+        except Exception as e:
+            print(e)
+            return{'message':'Internal server error'},500

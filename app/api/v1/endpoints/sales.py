@@ -3,6 +3,7 @@ from ..models.product_model import Product
 from ..models.sales_model import Sale
 from flask_restful import Resource, reqparse
 from datetime import datetime
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity,get_raw_jwt)
 
 
 # request data validation
@@ -25,13 +26,18 @@ class SalesRecord(Resource):
         username = args['username']
         cart_id = args['cart_id']
         sale_date = args['sale_date']
-        total =args['total']      
-        
-        my_new_sale = Sale(sale_record_id,user_id,username,cart_id,sale_date,total)
-        new_sale = my_new_sale.post_sale()
-        return make_response(jsonify({
-                'sale': new_sale
-            }), 201)
+        total =args['total'] 
+
+        try:
+            my_new_sale = Sale(sale_record_id,user_id,username,cart_id,sale_date,total)
+            new_sale = my_new_sale.post_sale()
+            return make_response(jsonify({
+                    'sale': new_sale
+                }), 201)
+
+        except Exception as e:
+            print(e)
+            return{'message':'Internal server error'},500
 
    
     def get(self,sale_id = None):
@@ -50,6 +56,7 @@ class SalesRecord(Resource):
                     'sale': sale
                 }
             ), 200) 
+            
         """Get a single sale from the sales list"""
         view_sale = Sale.get_single_sale(self,sale_id)
         if view_sale:
