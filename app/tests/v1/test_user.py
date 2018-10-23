@@ -17,7 +17,7 @@ class TestUser(unittest.TestCase):
         self.user_data_empty_username ={'username':'','first_name':'Sylvie','last_name':'','email':'','password':234452}
 
     def test_register_user(self):
-        '''Test API can create a sale record (POST request)'''
+        '''Test API can create a new user (POST request)'''
         new_user = self.client().post('/api/v1/users',data = self.user_data)       
         self.assertEqual(new_user.status_code, 201)
     

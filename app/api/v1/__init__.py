@@ -4,6 +4,7 @@ from .endpoints.sales import SalesRecord
 from .endpoints.products import Products
 from .endpoints.user import User
 from .endpoints.user import Login
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 # from .endpoints.user import SecretResource
 
 

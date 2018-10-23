@@ -2,11 +2,10 @@ from flask import Flask, make_response, jsonify, request
 from ..models.user_model import UserModel
 from flask_restful import Resource, reqparse
 from datetime import date, datetime, timedelta
-import re
 from passlib.hash import sha256_crypt
-from functools import wraps
-import jwt
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity,get_raw_jwt)
 from instance.config import secret_key
+import re
 
 parser =reqparse.RequestParser()
 parser.add_argument('username')
@@ -18,29 +17,6 @@ parser.add_argument('password')
 
 
 """ Create a function that generates authentication"""
-def token_required(f):   
-    # view function
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
-        if not token:
-            return jsonify({'message' : 'Token is missing!'}), 401
-
-        try: 
-            data = jwt.decode(token,secret_key) 
-            all_users = UserModel().get_all_users()    
-            current_user = [user for user in all_users if user['email']==data['email']]
-           
-        except:
-            return jsonify({'message' : 'Token is invalid!'}), 401
-
-        return f(current_user, *args, **kwargs)
-
-    return decorated
 
 class User(Resource): 
     def post(self):
@@ -92,6 +68,23 @@ class User(Resource):
                     
                 }
             ), 400)
+
+            # validate user input
+            email_format = re.compile(
+            r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[.a-zA-Z-]+$)")
+
+            if not (re.match(email_format, email)):
+                return make_response(jsonify({'message' : 'Invalid email'}), 400)
+
+            if len(raw_password) < 8:
+                return make_response(jsonify({'message' : 'Password should be atleast 8 characters'}), 400)
+            
+            #  check if email already exist 
+            this_user = UserModel.find_by_email(email)
+            if this_user != False:
+                return {'message': 'email already exist'},400 
+               
+               
 # generate hash password
             password = UserModel.hash_password(raw_password)
             user = UserModel.create_user(username,first_name,last_name,password,email)
@@ -131,17 +124,12 @@ class Login(Resource):
 # check if user password and stored hashed password match
             password_match = UserModel.verify_password(password,email)
             if password_match == True:
-# setup payload with an expiry period
-                payload = {
-                    'exp': datetime.utcnow() + timedelta(minutes=7),
-                    'iat': datetime.utcnow(),
-                    'sub': email
-                    }                
-# create token
-                return jwt.encode(
-                    payload,
-                    secret_key
-                    algorithm='HS256'
-                     )            
+                access_token = create_access_token(identity = email)
+
+                return {
+                         "message":"logged in successfully",
+                         "access_token":access_token
+                         }        
 
             return {"message":"wrong credentials"}
+  

@@ -34,12 +34,7 @@ class UserModel():
     @staticmethod
     def find_by_email(email):
         # fetch all users
-        for x in users :
-            listOfKeys =[key for (key,value) in x.items() if value == email]
-            if listOfKeys :
-                return 1
-
-        return 0
+        return next((item for item in users if item["email"] == email), False)
 
 # hash user password
     @staticmethod
@@ -58,5 +53,5 @@ class UserModel():
                 return sha256.verify(password, result[0]['password'])
         
 
-    # end here
+
     
