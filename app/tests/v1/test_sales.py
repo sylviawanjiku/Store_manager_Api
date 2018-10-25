@@ -19,7 +19,8 @@ class TestSales(unittest.TestCase):
         '''Test API can create a sale record (POST request)'''
         # Create a product
         new_product = self.client().post('/api/v1/products',data = self.products_data)
-        self.assertEqual(new_product.status_code, 201)new_sale = self.client().post('/api/v1/sales',data = self.sales_data)  
+        self.assertEqual(new_product.status_code, 201)
+        new_sale = self.client().post('/api/v1/sales',data = self.sales_data)  
         sale = json.loads(new_sale.data.decode('utf-8'))     
         self.assertEqual(new_sale.status_code, 201)
     
