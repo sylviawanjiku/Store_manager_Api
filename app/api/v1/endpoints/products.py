@@ -62,7 +62,9 @@ class Products(Resource):
         min_stock =args['min_stock']
         uom =args['uom']
         category = args['category']      
-        
+        product = [product for product in Product.products if product['product_id']== product_id]
+        if product:
+            return{"message":"Product already exists"}
         try:
             my_product = Product(product_id,product_name,brand,quantity,price,avail_stock,min_stock,uom,category)
             new_product = my_product.post_product()
