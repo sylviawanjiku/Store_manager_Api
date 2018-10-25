@@ -76,6 +76,3 @@ class Products(Resource):
         except Exception as e:
             print(e)
             return{'message':'Internal server error'},500
-
-
-
