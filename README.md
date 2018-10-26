@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e02fd0ab54224d129610c4f0fdd3769a)](https://app.codacy.com/app/sylviawanjiku/Store_manager_Api?utm_source=github.com&utm_medium=referral&utm_content=sylviawanjiku/Store_manager_Api&utm_campaign=Badge_Grade_Dashboard)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d660a69253618dfb3ce9/maintainability)](https://codeclimate.com/github/sylviawanjiku/Store_manager_Api/maintainability)
 [![Build Status](https://travis-ci.org/sylviawanjiku/Store_manager_Api.svg?branch=ch-test-user-endpoints-161360489)](https://travis-ci.org/sylviawanjiku/Store_manager_Api)
 [![Coverage Status](https://coveralls.io/repos/github/sylviawanjiku/Store_manager_Api/badge.svg?branch=master)](https://coveralls.io/github/sylviawanjiku/Store_manager_Api?branch=master)
